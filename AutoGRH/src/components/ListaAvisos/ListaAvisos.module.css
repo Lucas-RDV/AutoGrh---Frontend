@@ -1,0 +1,25 @@
+.avisos {
+  overflow-y: auto;
+  max-height: 400px;
+  flex: 1;
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.listaAvisos {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.listaAvisos li {
+  min-height: 32px;
+  border-bottom: 1px solid #eee;
+  padding: 8px 0;
+}

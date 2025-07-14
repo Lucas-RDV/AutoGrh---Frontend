@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 83vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.username {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.conteudo {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
