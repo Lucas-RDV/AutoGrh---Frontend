@@ -1,25 +1,116 @@
 .container {
   display: flex;
   flex-direction: column;
-  min-height: 83vh;
-  padding: 20px;
+  height: 83vh;
   box-sizing: border-box;
+  background-color: #f9f9f9;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
 }
 
-.username {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 12px;
+.usuarioLogado {
+  font-size: 0.75rem;
+  color: #444;
+  margin-bottom: 0.5rem;
   text-align: left;
 }
 
-.conteudo {
-  flex: 1;
+.menuAvisosContainer {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 32px;
+  height: 100%;
+}
+
+.menuCard {
+  background: #e0e0e0;
+  border-right: 1px solid #ccc;
+  width: 250px;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.menuTitulo {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.menuButton {
+  display: block;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: #dcdcdc;
+  border: 1px solid #888;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.menuButton:hover {
+  background-color: #c0c0c0;
+}
+
+.avisosCard {
+  flex: 1;
+  background: white;
+  border-left: none;
+  padding: 2rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.avisosHeader {
+  background-color: #a00;
+  color: white;
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.avisosTableContainer {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid #444;
+}
+
+.avisosTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.avisosTable th,
+.avisosTable td {
+  border-top: 1px solid #444;
+  border-left: none;
+  border-right: none;
+  padding: 0.5rem;
+  text-align: left;
+  height: 40px;
+}
+
+.avisosTable td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.msgCol {
+  width: 80%;
+  padding-right: 1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.dateCol {
+  width: 20%;
+  text-align: right;
+  white-space: nowrap;
 }
