@@ -1,5 +1,4 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import styles from './Navbar.module.css';
 import logo from '/AutoGRH.svg';
 
 const NavBar = () => {
@@ -18,26 +17,28 @@ const NavBar = () => {
   };
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.leftSection}>
-        <img src={logo} alt="AutoGRH Logo" className={styles.logo} />
-        <span className={styles.title}>AutoGRH</span>
+    <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom px-3">
+      <div className="d-flex align-items-center">
+        <img src={logo} alt="AutoGRH Logo" style={{ height: '40px', marginRight: '10px' }} />
+        <span className="navbar-brand mb-0 h1">AutoGRH</span>
       </div>
 
       {location.pathname !== '/login' && (
-        <div className={styles.rightSection}>
-          <ul className={styles.navbarLinks}>
+        <div className="ms-auto d-flex align-items-center">
+          <ul className="navbar-nav me-3">
             {links.map(({ path, label }) => (
-              <li
-                key={path}
-                className={location.pathname === path ? styles.active : ''}
-              >
-                <Link to={path}>{label}</Link>
+              <li key={path} className="nav-item">
+                <Link
+                  to={path}
+                  className={`nav-link ${location.pathname === path ? 'active fw-bold text-primary' : ''}`}
+                >
+                  {label}
+                </Link>
               </li>
             ))}
           </ul>
 
-          <button className={styles.logoutButton} onClick={handleLogout}>
+          <button className="btn btn-outline-danger btn-sm" onClick={handleLogout}>
             Logout
           </button>
         </div>

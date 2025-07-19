@@ -1,11 +1,10 @@
-import styles from './Login.module.css';
 import FormLogin from '../../components/formLogin/FormLogin';
 
 const Login = () => {
   return (
-    <div className={styles.container}>
-      <div className={styles.loginBox}>
-        <h1 className={styles.title}>Login</h1>
+    <div className="flex-fill d-flex justify-content-center align-items-center bg-light">
+      <div className="text-center">
+        <h1 className="mb-4">Login</h1>
         <FormLogin />
       </div>
     </div>

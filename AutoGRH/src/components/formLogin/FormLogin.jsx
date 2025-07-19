@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './FormLogin.module.css';
 
 const FormLogin = () => {
   const [username, setUsername] = useState('');
@@ -14,30 +13,32 @@ const FormLogin = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      <div className={styles.inputGroup}>
-        <label htmlFor="username">Usuário</label>
+    <form onSubmit={handleSubmit} className="p-4 border rounded bg-white shadow-sm w-100" style={{ maxWidth: '400px', margin: '0 auto' }}>
+      <div className="mb-3">
+        <label htmlFor="username" className="form-label">Usuário</label>
         <input
           type="text"
           id="username"
+          className="form-control"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
         />
       </div>
 
-      <div className={styles.inputGroup}>
-        <label htmlFor="password">Senha</label>
+      <div className="mb-3">
+        <label htmlFor="password" className="form-label">Senha</label>
         <input
           type="password"
           id="password"
+          className="form-control"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>
 
-      <button type="submit" className={styles.submitButton}>
+      <button type="submit" className="btn btn-primary w-100">
         Entrar
       </button>
     </form>

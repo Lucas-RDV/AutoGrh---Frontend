@@ -1,71 +1,52 @@
 import { useState, useEffect } from 'react';
-import styles from './Home.module.css';
 import { useAuth } from '../../context/AuthContext';
+import styles from './Home.module.css';
 
 export default function Home() {
   const { user } = useAuth();
   const [avisos, setAvisos] = useState([]);
 
   useEffect(() => {
-    // executa ao carregar a pagina
-    const avisosMock = Array.from({ length: 15 }, (_, i) => ({
+    const avisosMock = Array.from({ length: 30 }, (_, i) => ({
       texto: `Aviso ${i + 1}`,
       data: '10/07/2025',
     }));
     setAvisos(avisosMock);
   }, []);
 
-  const handleFolhaPagamento = () => {
-    alert('Função não implementada');
-  };
-
-  const handleRequisicaoVale = () => {
-    alert('Função não implementada');
-  };
-
-  const handleRequisicaoFerias = () => {
-    alert('Função não implementada');
-  };
-
-  const handleCadastroFuncionario = () => {
-    alert('Função não implementada');
-  };
-
-  const totalLinhas = 7;
-  const linhasExtras = totalLinhas - avisos.length;
+  const handleFolhaPagamento = () => alert('Função não implementada');
+  const handleRequisicaoVale = () => alert('Função não implementada');
+  const handleRequisicaoFerias = () => alert('Função não implementada');
+  const handleCadastroFuncionario = () => alert('Função não implementada');
 
   return (
-    <div className={styles.container}>
-      <div className={styles.menuAvisosContainer}>
-        <div className={styles.menuCard}>
-       <div className={styles.usuarioLogado}>{user?.username || 'teste'}</div>
-          <h2 className={styles.menuTitulo}>Acesso Rápido</h2>
-          <button className={styles.menuButton} onClick={handleFolhaPagamento}>Gerar folha de pagamento</button>
-          <button className={styles.menuButton} onClick={handleRequisicaoVale}>requisição de vale</button>
-          <button className={styles.menuButton} onClick={handleRequisicaoFerias}>Requisição de ferias</button>
-          <button className={styles.menuButton} onClick={handleCadastroFuncionario}>Cadastrar novo funcionário</button>
+    <div className="flex-fill d-flex flex-row gap-4 p-4">
+      {/* Menu lateral */}
+      <div className="bg-light p-3 shadow-sm" style={{ minWidth: '280px' }}>
+        <div className="text-muted small mb-3">{user?.username || 'teste'}</div>
+        <h5 className="mb-3">Acesso Rápido</h5>
+        <div className="d-grid gap-2">
+          <button className="btn btn-primary" onClick={handleFolhaPagamento}>Gerar folha de pagamento</button>
+          <button className="btn btn-primary" onClick={handleRequisicaoVale}>Requisição de vale</button>
+          <button className="btn btn-primary" onClick={handleRequisicaoFerias}>Requisição de férias</button>
+          <button className="btn btn-primary" onClick={handleCadastroFuncionario}>Cadastrar novo funcionário</button>
         </div>
+      </div>
 
-        <div className={styles.avisosCard}>
-          <div className={styles.avisosHeader}>Avisos</div>
-          <div className={styles.avisosTableContainer}>
-            <table className={styles.avisosTable}>
-              <tbody>
-                {avisos.map((aviso, index) => (
-                  <tr key={index}>
-                    <td className={styles.msgCol}>{aviso.texto}</td>
-                    <td className={styles.dateCol}>{aviso.data}</td>
-                  </tr>
-                ))}
-                {Array.from({ length: linhasExtras > 0 ? linhasExtras : 0 }).map((_, i) => (
-                  <tr key={`vazio-${i}`}>
-                    <td className={styles.msgCol}>&nbsp;</td>
-                    <td className={styles.dateCol}></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+      {/* Avisos */}
+      <div className="flex-grow-1 d-flex flex-column bg-white p-3 shadow-sm">
+        <div className={styles.avisosTitulo}>Avisos</div>
+        <div className="flex-grow-1 overflow-auto">
+          <table className={`table table-hover ${styles.avisosTabela}`}>
+            <tbody>
+              {avisos.map((aviso, index) => (
+                <tr key={index}>
+                  <td className="w-75">{aviso.texto}</td>
+                  <td className="w-25 text-end text-muted">{aviso.data}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
