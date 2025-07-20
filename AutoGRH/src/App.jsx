@@ -23,16 +23,16 @@ function App() {
         <div className="d-flex flex-column min-vh-100">
           <NavBar />
 
-          <main className="flex-fill d-flex flex-column">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/pagamentos" element={<Pagamentos />} />
-              <Route path="/ferias" element={<Ferias />} />
-              <Route path="/funcionarios" element={<Funcionarios />} />
-            </Routes>
-          </main>
+            <div className="container-fluid py-3 h-100">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/pagamentos" element={<Pagamentos />} />
+                <Route path="/ferias" element={<Ferias />} />
+                <Route path="/funcionarios" element={<Funcionarios />} />
+              </Routes>
+            </div>
 
           <Footer />
         </div>
