@@ -6,11 +6,17 @@ const NavBar = () => {
   const navigate = useNavigate();
 
   const links = [
-    { path: '/', label: 'Início' },
+    { path: '/home', label: 'Início' },
     { path: '/funcionarios', label: 'Funcionários' },
     { path: '/pagamentos', label: 'Pagamentos' },
     { path: '/ferias', label: 'Férias' },
   ];
+
+  const isActive = (path) => {
+    if (path === '/' && (location.pathname === '/' || location.pathname === '/home')) return true;
+    if (path !== '/' && location.pathname.startsWith(path)) return true;
+    return false;
+  };
 
   const handleLogout = () => {
     navigate('/login');
@@ -30,7 +36,7 @@ const NavBar = () => {
               <li key={path} className="nav-item">
                 <Link
                   to={path}
-                  className={`nav-link ${location.pathname === path ? 'active fw-bold text-primary' : ''}`}
+                  className={`nav-link ${isActive(path) ? 'active fw-bold text-primary' : ''}`}
                 >
                   {label}
                 </Link>
