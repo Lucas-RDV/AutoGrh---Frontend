@@ -1,9 +1,11 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import logo from '/AutoGRH.svg';
 
 const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { logout, isLoggedIn } = useAuth();
 
   const links = [
     { path: '/home', label: 'Início' },
@@ -19,7 +21,8 @@ const NavBar = () => {
   };
 
   const handleLogout = () => {
-    navigate('/login');
+    logout();                           // limpa token e user (AuthContext + localStorage)
+    navigate('/login', { replace: true });
   };
 
   return (
