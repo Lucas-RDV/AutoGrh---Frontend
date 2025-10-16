@@ -1,11 +1,11 @@
 import { NavLink, Outlet, useLocation, Navigate } from 'react-router-dom';
 
-export default function Pagamentos() {
+const Admin = () => {
   const location = useLocation();
-  const atRoot = location.pathname === '/pagamentos';
+  const atRoot = location.pathname === '/admin';
 
   if (atRoot) {
-    return <Navigate to="/pagamentos/folha" replace />;
+    return <Navigate to="/admin/usuarios" replace />;
   }
 
   return (
@@ -13,23 +13,23 @@ export default function Pagamentos() {
       <div className="col-12">
         <div className="card shadow-sm">
           <div className="card-body">
-            <h5 className="card-title mb-3">Pagamentos</h5>
+            <h5 className="card-title mb-3">Área Administrativa</h5>
 
             <ul className="nav nav-pills">
               <li className="nav-item">
                 <NavLink
-                  to="/pagamentos/folha"
+                  to="/admin/usuarios"
                   className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
                 >
-                  Folha
+                  Usuários
                 </NavLink>
               </li>
               <li className="nav-item ms-2">
                 <NavLink
-                  to="/pagamentos/vales"
+                  to="/admin/logs"
                   className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
                 >
-                  Vales
+                  Logs
                 </NavLink>
               </li>
             </ul>
@@ -42,4 +42,6 @@ export default function Pagamentos() {
       </div>
     </div>
   );
-}
+};
+
+export default Admin;

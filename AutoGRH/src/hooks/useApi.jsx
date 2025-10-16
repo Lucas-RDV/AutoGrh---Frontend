@@ -25,29 +25,33 @@ export function useApi() {
         ...rest,
         headers,
         signal: controller.signal,
-        credentials: 'include', 
+        credentials: 'include',
       });
     } catch (e) {
       clearTimeout(timer);
       if (e?.name === 'AbortError') {
-        try { window.alert('Tempo de resposta excedido. Tente novamente.'); } catch {}
+        try { window.alert('Tempo de resposta excedido. Tente novamente.'); } catch { }
         throw new Error('timeout');
       }
-      try { window.alert('Falha de conexão. Verifique sua rede e tente novamente.'); } catch {}
+      try { window.alert('Falha de conexão. Verifique sua rede e tente novamente.'); } catch { }
       throw new Error('network');
     } finally {
       clearTimeout(timer);
     }
 
     if (res.status === 401) {
-      try { window.alert('Sua sessão expirou. Faça login novamente.'); } catch {}
+      try { window.alert('Sua sessão expirou. Faça login novamente.'); } catch { }
       await logout();
       window.location.replace('/login');
       throw new Error('Sessão expirada');
     }
 
+    if (res.status === 403) {
+      try { window.alert('Ação não autorizada para seu perfil.'); } catch { }
+    }
+
     if (res.status >= 500) {
-      try { window.alert('Erro no servidor. Tente novamente mais tarde.'); } catch {}
+      try { window.alert('Erro no servidor. Tente novamente mais tarde.'); } catch { }
     }
 
     return res;

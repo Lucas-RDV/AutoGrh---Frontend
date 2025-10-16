@@ -5,13 +5,12 @@ import logo from '/AutoGRH.svg';
 const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout, isLoggedIn } = useAuth();
+  const { logout, isLoggedIn, user } = useAuth();
 
   const links = [
     { path: '/home', label: 'Início' },
     { path: '/funcionarios', label: 'Funcionários' },
     { path: '/pagamentos', label: 'Pagamentos' },
-    { path: '/ferias', label: 'Férias' },
   ];
 
   const isActive = (path) => {
@@ -45,6 +44,16 @@ const NavBar = () => {
                 </Link>
               </li>
             ))}
+            {user?.isAdmin && (
+      <li className="nav-item">
+        <Link
+          to="/admin"
+          className={`nav-link ${isActive('/admin') ? 'active fw-bold text-primary' : ''}`}
+        >
+          Admin
+        </Link>
+      </li>
+    )}
           </ul>
 
           <button className="btn btn-outline-danger btn-sm" onClick={handleLogout}>

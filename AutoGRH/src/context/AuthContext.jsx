@@ -4,11 +4,19 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
 
 const AuthContext = createContext();
 
+function normalizeUser(u) {
+  if (!u) return null;
+  const role = String(u.perfil ?? u.role ?? '').toLowerCase();
+  const isAdmin = u.isAdmin === true || role === 'admin';
+  return { ...u, isAdmin };
+}
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     try {
       const raw = localStorage.getItem('user');
-      return raw ? JSON.parse(raw) : null;
+      const parsed = raw ? JSON.parse(raw) : null;
+      return normalizeUser(parsed);
     } catch {
       return null;
     }
@@ -55,10 +63,11 @@ export const AuthProvider = ({ children }) => {
 
     const data = await res.json();
 
-    setUser(data.usuario || null);
+    const u = normalizeUser(data.usuario || null);
+    setUser(u);
     setExpiresAt(data.expiresAt || null);
 
-    localStorage.setItem('user', JSON.stringify(data.usuario || null));
+    localStorage.setItem('user', JSON.stringify(u));
     if (data.expiresAt) localStorage.setItem('expiresAt', data.expiresAt);
 
     localStorage.removeItem('token');
@@ -91,7 +100,7 @@ export const AuthProvider = ({ children }) => {
         const savedExp = localStorage.getItem('expiresAt');
 
         if (savedUser && !user) {
-          try { setUser(JSON.parse(savedUser)); } catch { setUser(null); }
+          try { setUser(normalizeUser(JSON.parse(savedUser))); } catch { setUser(null); }
         }
         if (savedExp && !expiresAt) setExpiresAt(savedExp);
 
@@ -110,10 +119,11 @@ export const AuthProvider = ({ children }) => {
         } else if (me.ok && !user) {
           try {
             const maybeJson = await me.json();
-            if (maybeJson && (maybeJson.usuario || maybeJson.user)) {
-              const u = maybeJson.usuario || maybeJson.user;
-              setUser(u);
-              localStorage.setItem('user', JSON.stringify(u));
+           if (maybeJson && (maybeJson.usuario || maybeJson.user)) {
+              const raw = maybeJson.usuario || maybeJson.user;
+              const norm = normalizeUser(raw);
+              setUser(norm);
+              localStorage.setItem('user', JSON.stringify(norm));
             }
           } catch {
           }

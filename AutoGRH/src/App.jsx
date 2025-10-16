@@ -8,7 +8,6 @@ import RequireAuth from './routes/RequireAuth';
 // Context
 import { AuthProvider, useAuth } from './context/AuthContext';
 
-
 // Components
 import NavBar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
@@ -17,22 +16,32 @@ import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import Pagamentos from './pages/Pagamentos/Pagamentos';
-import Ferias from './pages/Ferias/Ferias';
-import FeriasPendentes from './pages/Ferias/FeriasPendentes';
-import FeriasHistorico from './pages/Ferias/FeriasHistorico';
-import FeriasDisponiveis from './pages/Ferias/FeriasDisponiveis';
 import Funcionarios from './pages/Funcionarios/Funcionarios';
+import FuncionarioDetail from './pages/Funcionarios/FuncionarioDetail';
+import FuncionarioCreate from './pages/Funcionarios/FuncionarioCreate';
+import Admin from './pages/Admin/Admin';
+import Usuarios from './pages/Admin/Usuarios';
+import Logs from './pages/Admin/Logs';
+import FolhaSection from './pages/Pagamentos/FolhaSection';
+import ValesSection from './pages/Pagamentos/ValesSection';
 
 function LoginRoute() {
   const { isLoggedIn } = useAuth();
   const location = useLocation();
 
   if (isLoggedIn) {
-    // se veio de uma rota protegida, volta pra lá; senão vai pra /home
     const to = location.state?.from?.pathname || '/home';
     return <Navigate to={to} replace />;
   }
   return <Login />;
+}
+
+function RequireAdmin({ children }) {
+  const { user } = useAuth();
+  if (!user?.isAdmin) {
+    return <Navigate to="/home" replace />;
+  }
+  return children;
 }
 
 function AppContent() {
@@ -52,15 +61,33 @@ function AppContent() {
 
       {/* Rotas privadas */}
       <Route path="/home" element={<RequireAuth><Home /></RequireAuth>} />
-      <Route path="/pagamentos" element={<RequireAuth><Pagamentos /></RequireAuth>} />
-      <Route path="/funcionarios" element={<RequireAuth><Funcionarios /></RequireAuth>} />
 
-      {/* Férias com subrotas protegidas */}
-      <Route path="/ferias" element={<RequireAuth><Ferias /></RequireAuth>}>
-        <Route path="pendentes" element={<FeriasPendentes />} />
-        <Route path="historico" element={<FeriasHistorico />} />
-        <Route path="disponiveis" element={<FeriasDisponiveis />} />
+      {/* Área Admin */}
+      <Route
+        path="/admin"
+        element={
+          <RequireAuth>
+            <RequireAdmin>
+              <Admin />
+            </RequireAdmin>
+          </RequireAuth>
+        }
+      >
+        <Route path="usuarios" element={<Usuarios />} />
+        <Route path="logs" element={<Logs />} />
       </Route>
+
+      {/* Pagamentos */}
+      <Route path="/pagamentos" element={<RequireAuth><Pagamentos /></RequireAuth>}>
+        <Route index element={<Navigate to="folha" replace />} />
+        <Route path="folha" element={<FolhaSection />} />
+        <Route path="vales" element={<ValesSection />} />
+      </Route>
+
+      {/* Funcionários */}
+      <Route path="/funcionarios" element={<RequireAuth><Funcionarios /></RequireAuth>} />
+      <Route path="/funcionarios/novo" element={<RequireAuth><FuncionarioCreate /></RequireAuth>} />
+      <Route path="/funcionarios/:id" element={<RequireAuth><FuncionarioDetail /></RequireAuth>} />
 
       {/* Defaults */}
       <Route path="/" element={<Navigate to="/home" replace />} />
@@ -75,11 +102,9 @@ function App() {
       <BrowserRouter>
         <div className="d-flex flex-column min-vh-100">
           <NavBar />
-
           <div className="flex-fill container py-3">
-           <AppContent />
+            <AppContent />
           </div>
-
           <Footer />
         </div>
       </BrowserRouter>
