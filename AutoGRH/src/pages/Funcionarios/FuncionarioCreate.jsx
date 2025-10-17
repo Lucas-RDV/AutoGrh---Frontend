@@ -1,4 +1,3 @@
-// src/pages/Funcionarios/FuncionarioCreate.jsx
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useApi } from "../../hooks/useApi";
@@ -10,9 +9,7 @@ const onlyDigits = (s) => String(s || "").replace(/\D/g, "");
 const isBlank = (v) => v === null || v === undefined || String(v).trim() === "";
 const fmtDateYYYYMMDD = (v) => (v ? v : "");
 
-// ---- Máscaras de exibição ----
 function maskContato9(v) {
-  // 9 dígitos -> xxxxx-xxxx
   const d = onlyDigits(v).slice(0, 9);
   if (d.length <= 5) return d;
   return `${d.slice(0, 5)}-${d.slice(5)}`;
@@ -31,7 +28,6 @@ function maskCPF(v) {
   return out;
 }
 function maskPIS(v) {
-  // 000.00000.00-0 (11 dígitos)
   const d = onlyDigits(v).slice(0, 11);
   const p1 = d.slice(0, 3);
   const p2 = d.slice(3, 8);
@@ -52,13 +48,11 @@ export default function FuncionarioCreate() {
   const funcionariosApi = useMemo(() => makeFuncionariosApi(request), [request]);
   const salariosApi = useMemo(() => makeSalariosApi(request), [request]);
 
-  // Etapa 1: busca por CPF
   const [cpfBusca, setCpfBusca] = useState("");
-  const [step, setStep] = useState("search"); // "search" | "form" | "blocked"
+  const [step, setStep] = useState("search"); 
   const [err, setErr] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Dados da Pessoa
   const [pessoaId, setPessoaId] = useState(null);
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
@@ -67,18 +61,15 @@ export default function FuncionarioCreate() {
   const [contato, setContato] = useState("");
   const [contatoEmergencia, setContatoEmergencia] = useState("");
 
-  // Dados do Funcionário
   const [cargo, setCargo] = useState("");
   const [pis, setPis] = useState("");
   const [ctps, setCtps] = useState("");
   const [nascimento, setNascimento] = useState("");
   const [admissao, setAdmissao] = useState("");
 
-  // Salários (opcionais na criação)
-  const [salario, setSalario] = useState("");       // mapeia para salarioInicial
-  const [salarioReal, setSalarioReal] = useState(""); // tentamos criar registro em /salarios-reais
+  const [salario, setSalario] = useState("");     
+  const [salarioReal, setSalarioReal] = useState("");
 
-  // Para bloqueio
   const [funcionarioAtivoId, setFuncionarioAtivoId] = useState(null);
 
   async function checarBloqueioPorPessoa(pessoa) {
@@ -90,7 +81,7 @@ export default function FuncionarioCreate() {
       try {
         const det = await funcionariosApi.getById(f.id);
         const demissao = det?._raw?.demissao || det?.demissao || null;
-        const ativo = demissao ? false : true; // ativo = sem demissão
+        const ativo = demissao ? false : true;
         if (ativo) {
           return { bloqueado: true, funcionarioId: det.id };
         }
@@ -143,7 +134,6 @@ export default function FuncionarioCreate() {
       const pessoa = await pessoasApi.findByCpf(digits);
 
       if (!pessoa) {
-        // Pessoa inexistente → formulário em branco
         setPessoaId(null);
         setNome("");
         setCpf(digits);
@@ -162,7 +152,6 @@ export default function FuncionarioCreate() {
         return;
       }
 
-      // Pessoa existe → checar funcionário ativo
       const { bloqueado, funcionarioId, possiveis } =
         await checarBloqueioPorPessoa(pessoa);
 
@@ -172,7 +161,6 @@ export default function FuncionarioCreate() {
         return;
       }
 
-      // Pré-preencher com dados de Pessoa
       setPessoaId(pessoa.id);
       setNome(pessoa.nome || "");
       setCpf(onlyDigits(pessoa.cpf));
@@ -181,7 +169,6 @@ export default function FuncionarioCreate() {
       setContato(onlyDigits(pessoa.contato));
       setContatoEmergencia(onlyDigits(pessoa.contatoEmergencia));
 
-      // Nascimento herdado de algum funcionário anterior
       const nasc = await buscarNascimentoDeAlgumFuncionario(possiveis);
       setNascimento(nasc || "");
 
@@ -222,7 +209,6 @@ export default function FuncionarioCreate() {
       return;
     }
 
-    // Salários numéricos
     const salIni = isBlank(salario) ? 0 : Number(String(salario).replace(",", "."));
     const salRealNum = isBlank(salarioReal) ? null : Number(String(salarioReal).replace(",", "."));
 
@@ -230,7 +216,6 @@ export default function FuncionarioCreate() {
     try {
       let pessoaCriadaOuExistenteId = pessoaId;
 
-      // 1) Cria ou atualiza Pessoa
       if (!pessoaCriadaOuExistenteId) {
         const nova = await pessoasApi.create({
           nome: nome.trim(),
@@ -286,12 +271,10 @@ export default function FuncionarioCreate() {
     <div className="container py-3">
       <div className="d-flex align-items-center mb-3">
         <h3 className="mb-0">Dados do funcionário</h3>
-        {/* removido botão Voltar aqui para não duplicar funcionalidade do Cancelar */}
       </div>
 
       {err && <div className="alert alert-danger">{err}</div>}
 
-      {/* Passo 1: CPF */}
       {step === "search" && (
         <form onSubmit={handleSearchCPF} className="row g-2 mb-3">
           <div className="col-md-4">
@@ -312,7 +295,6 @@ export default function FuncionarioCreate() {
         </form>
       )}
 
-      {/* Bloqueio */}
       {step === "blocked" && (
         <div className="alert alert-warning">
           Já existe um <strong>Funcionário ativo</strong> vinculado a esse CPF.
@@ -322,12 +304,10 @@ export default function FuncionarioCreate() {
         </div>
       )}
 
-      {/* Formulário único */}
       {step === "form" && (
         <form onSubmit={handleSubmit} className="vstack gap-3">
           <div className="card">
             <div className="card-body row g-3">
-              {/* Linha 1 */}
               <div className="col-md-6">
                 <label className="form-label">Nome*</label>
                 <input className="form-control" value={nome} onChange={(e) => setNome(e.target.value)} />
@@ -340,7 +320,7 @@ export default function FuncionarioCreate() {
                   onChange={(e) => setCpf(onlyDigits(e.target.value))}
                   placeholder="xxx.xxx.xxx-xx"
                   maxLength={14}
-                  disabled // CPF travado após checagem
+                  disabled
                 />
               </div>
               <div className="col-md-3">
@@ -354,7 +334,6 @@ export default function FuncionarioCreate() {
                 />
               </div>
 
-              {/* Linha 2 */}
               <div className="col-md-6">
                 <label className="form-label">Endereço</label>
                 <input className="form-control" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
@@ -380,7 +359,6 @@ export default function FuncionarioCreate() {
                 />
               </div>
 
-              {/* Linha 3 */}
               <div className="col-md-4">
                 <label className="form-label">Cargo*</label>
                 <input className="form-control" value={cargo} onChange={(e) => setCargo(e.target.value)} />
@@ -406,7 +384,6 @@ export default function FuncionarioCreate() {
                 />
               </div>
 
-              {/* Linha 4 */}
               <div className="col-md-3">
                 <label className="form-label">Nascimento*</label>
                 <input type="date" className="form-control" value={nascimento} onChange={(e) => setNascimento(e.target.value)} />

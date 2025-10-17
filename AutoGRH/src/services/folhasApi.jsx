@@ -4,7 +4,7 @@ export function makeFolhasApi(request) {
   const list = async ({ ano, tipo } = {}) => {
     const qs = new URLSearchParams();
     if (ano) qs.set('ano', String(ano));
-    if (tipo) qs.set('tipo', String(tipo)); // "SALARIO" | "VALE"
+    if (tipo) qs.set('tipo', String(tipo));
     const url = qs.toString() ? `${base}?${qs}` : `${base}`;
     const res = await request(url, { method: 'GET' });
     if (!res.ok) throw new Error((await res.text()) || 'Falha ao listar folhas');

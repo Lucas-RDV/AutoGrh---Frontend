@@ -20,8 +20,7 @@ const Logs = () => {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
 
-  // filtros suportados no backend atual
-  const [limit, setLimit] = useState(200); 
+  const [limit, setLimit] = useState(50); 
   const [usuarioId, setUsuarioId] = useState('');
 
   const [q, setQ] = useState('');

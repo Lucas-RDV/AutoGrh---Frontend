@@ -6,7 +6,6 @@ export function makeDescansosApi(request) {
   }
 
   async function listByFerias(feriasId) {
-    // Mantido para casos em que você queira ancorar por período
     const r = await request(`/ferias/${feriasId}/descansos`, { method: "GET" });
     if (!r.ok) throw new Error(await r.text());
     return r.json();

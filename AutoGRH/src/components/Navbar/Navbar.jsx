@@ -20,7 +20,7 @@ const NavBar = () => {
   };
 
   const handleLogout = () => {
-    logout();                           // limpa token e user (AuthContext + localStorage)
+    logout();                           
     navigate('/login', { replace: true });
   };
 

@@ -43,7 +43,7 @@ export default function ValesSection() {
 
   const api = makeValesApi(request);
 
-  const [tab, setTab] = useState('todos'); // 'todos' | 'pendentes' | 'aprovados-nao-pagos'
+  const [tab, setTab] = useState('todos');
   const [items, setItems] = useState([]);
   const [q, setQ] = useState('');
   const [loading, setLoading] = useState(false);
@@ -76,14 +76,13 @@ export default function ValesSection() {
     }
   }
 
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [tab]);
+  useEffect(() => { load();}, [tab]);
 
   const filtered = useMemo(() => {
     const t = q.trim();
 
     if (!t) return items;
 
-    // Tenta reconhecer mm/aaaa
     const mmAaaa = /^(\d{1,2})\s*\/\s*(\d{4})$/;
     const m = t.match(mmAaaa);
     if (m) {
@@ -98,7 +97,6 @@ export default function ValesSection() {
       });
     }
 
-    // Caso contrário: filtra por nome (sem acento e sem case)
     const needle = stripAccents(t.toLowerCase());
     return items.filter(v => {
       const funcId = v?.funcionario_id ?? v?.funcionarioID ?? v?.FuncionarioID;

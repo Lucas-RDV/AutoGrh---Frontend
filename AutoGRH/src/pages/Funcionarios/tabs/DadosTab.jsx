@@ -47,10 +47,8 @@ const DadosTab = forwardRef(function DadosTab({ func, pessoa, editing }, ref) {
 
   const ativo = !demissao;
 
-  // baseline p/ reset
   const baselineRef = useRef(null);
 
-  // hidratar somente quando ids mudam
   useEffect(() => {
     const p = pessoa || {};
     const f = func || {};
@@ -60,7 +58,6 @@ const DadosTab = forwardRef(function DadosTab({ func, pessoa, editing }, ref) {
     setCpf(p.cpf ?? '');
     setRg(p.rg ?? '');
     setEndereco(p.endereco ?? '');
-    // aceita snake_case e camelCase
     setContato(digits(p.contato ?? ''));
     setContatoEmergencia(digits((p.contato_emergencia ?? p.contatoEmergencia) ?? ''));
 
@@ -71,7 +68,6 @@ const DadosTab = forwardRef(function DadosTab({ func, pessoa, editing }, ref) {
     setAdmissao(toISO(f.admissao));
     setNascimento(toISO(f.nascimento));
 
-    // baseline para “Cancelar”
     baselineRef.current = {
       pessoa: {
         nome: p.nome ?? '',
@@ -156,7 +152,6 @@ const DadosTab = forwardRef(function DadosTab({ func, pessoa, editing }, ref) {
         });
       }
 
-      // atualiza baseline
       baselineRef.current = {
         pessoa: {
           nome, cpf, rg, endereco,

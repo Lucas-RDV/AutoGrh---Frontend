@@ -20,9 +20,9 @@ export default function PagamentoEditModal({ open, onClose, pagamento, onSaved, 
     Number.isInteger(anoFolha) && anoFolha >= 1900;
 
   const [adicional, setAdicional] = useState(0);
-  const [desc, setDesc] = useState(0); // Desconto (INSS)
+  const [desc, setDesc] = useState(0); 
   const [salFamilia, setSalFamilia] = useState(0);
-  const [descVales, setDescVales] = useState(0); // mostrado, mas não é editado via /pagamentos/{id}
+  const [descVales, setDescVales] = useState(0); 
 
   const [faltasQtd, setFaltasQtd] = useState(0);
 
@@ -57,12 +57,10 @@ export default function PagamentoEditModal({ open, onClose, pagamento, onSaved, 
     setBusy(true);
     setErr(null);
     try {
-      // 🔧 NOMES das chaves alinhados com o backend: adicional, inss, familia
       await payApi.update(id, {
         adicional,
         inss: desc,
         familia: salFamilia,
-        // descontoVales NÃO é atualizado por este endpoint
       });
 
       if (funcionarioId && competenciaOK && Number.isFinite(faltasQtd)) {

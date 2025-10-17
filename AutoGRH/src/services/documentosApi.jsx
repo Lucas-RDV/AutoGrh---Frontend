@@ -16,13 +16,11 @@ export function makeDocumentosApi(request) {
     return r.json();
   }
 
-  // Faz download/autovisualização via fetch COM Authorization e retorna {blob, filename}
   async function fetchBlob(id) {
     const r = await request(`/documentos/${id}/download`, { method: "GET" });
     if (!r.ok) throw new Error(await r.text());
     const blob = await r.blob();
 
-    // tenta extrair o filename a partir do header (nem sempre vem)
     let filename = "documento";
     const disp = r.headers.get("Content-Disposition");
     if (disp && /filename="?([^"]+)"?/i.test(disp)) {

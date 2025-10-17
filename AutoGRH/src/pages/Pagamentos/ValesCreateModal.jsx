@@ -8,7 +8,7 @@ export default function ValesCreateModal({ open, onClose, onCreated }) {
   const api = useMemo(() => makeValesApi(request), [request]);
 
   const { filtered: funcs, loading, err, q, setQ } = useFuncionarios({ onlyActive: true });
-  const [selected, setSelected] = useState(null); // { id, nome }
+  const [selected, setSelected] = useState(null);
   const [valor, setValor] = useState('');
   const [data, setData] = useState('');
   const [busy, setBusy] = useState(false);
@@ -20,7 +20,6 @@ export default function ValesCreateModal({ open, onClose, onCreated }) {
     if (open) {
       setSelected(null);
       setValor('');
-      // data padrão = hoje (YYYY-MM-DD)
       const today = new Date();
       const yyyy = today.getFullYear();
       const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -61,7 +60,6 @@ export default function ValesCreateModal({ open, onClose, onCreated }) {
             </div>
 
             <div className="modal-body">
-              {/* Funcionário buscável por nome/ID (dropdown controlado) */}
               <div className="mb-3">
                 <label className="form-label">Funcionário</label>
                 <div className="dropdown w-100">
@@ -92,7 +90,7 @@ export default function ValesCreateModal({ open, onClose, onCreated }) {
                             onMouseDown={() => {
                               setSelected(f);
                               setQ(f.nome);
-                              setOpenList(false); // fecha ao selecionar
+                              setOpenList(false);
                             }}
                           >
                             <span>{f.nome}</span>

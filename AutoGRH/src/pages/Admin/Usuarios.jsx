@@ -1,8 +1,6 @@
-// src/pages/Admin/Usuarios.jsx
 import { useEffect, useMemo, useState } from 'react';
 import { useApi } from '../../hooks/useApi';
 
-// A listagem do backend retorna UserMinimal: [{ id, login, nome, perfil }]
 function validateAndNormalize(list) {
   if (!Array.isArray(list)) {
     throw new Error('Resposta inválida: esperado um array');
@@ -21,15 +19,12 @@ function validateAndNormalize(list) {
 const Usuarios = () => {
   const { request } = useApi();
 
-  // listagem
   const [users, setUsers] = useState([]);
   const [loadingList, setLoadingList] = useState(true);
   const [errList, setErrList] = useState(null);
 
-  // filtro
   const [query, setQuery] = useState('');
 
-  // modal de criação
   const [showCreate, setShowCreate] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -37,18 +32,16 @@ const Usuarios = () => {
   const [submittingCreate, setSubmittingCreate] = useState(false);
   const [errCreate, setErrCreate] = useState(null);
 
-  // desativar
   const [deactivatingId, setDeactivatingId] = useState(null);
 
-  // modal de edição
   const [showEdit, setShowEdit] = useState(false);
   const [editId, setEditId] = useState(null);
   const [editUsername, setEditUsername] = useState('');
-  const [editPassword, setEditPassword] = useState(''); // opcional; envia só se preencher
+  const [editPassword, setEditPassword] = useState('');
   const [editIsAdmin, setEditIsAdmin] = useState(false);
   const [submittingEdit, setSubmittingEdit] = useState(false);
   const [errEdit, setErrEdit] = useState(null);
-  const [originalSnapshot, setOriginalSnapshot] = useState(null); // {login, isAdmin}
+  const [originalSnapshot, setOriginalSnapshot] = useState(null);
 
   async function fetchUsers() {
     setLoadingList(true);
@@ -72,7 +65,6 @@ const Usuarios = () => {
 
   useEffect(() => {
     fetchUsers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filtered = useMemo(() => {
@@ -84,7 +76,6 @@ const Usuarios = () => {
     );
   }, [users, query]);
 
-  // criar — abrir/fechar
   function openCreate() {
     setErrCreate(null);
     setUsername('');
@@ -97,7 +88,6 @@ const Usuarios = () => {
     setShowCreate(false);
   }
 
-  // criar — submit
   async function handleCreate(e) {
     e?.preventDefault?.();
     setErrCreate(null);
@@ -134,7 +124,6 @@ const Usuarios = () => {
     }
   }
 
-  // desativar
   async function handleDeactivate(u) {
     if (!u?.id) return;
     const ok = window.confirm(`Desativar o usuário "${u.login}" (ID ${u.id})?`);
@@ -156,7 +145,6 @@ const Usuarios = () => {
     }
   }
 
-  // editar — abrir/fechar
   function openEdit(u) {
     setErrEdit(null);
     setEditId(u.id);
@@ -171,7 +159,6 @@ const Usuarios = () => {
     setShowEdit(false);
   }
 
-  // editar — submit
   async function handleEdit(e) {
     e?.preventDefault?.();
     if (!editId) return;
@@ -183,12 +170,10 @@ const Usuarios = () => {
     const nextPass = editPassword.trim();
     const nextIsAdmin = !!editIsAdmin;
 
-    // inclui apenas campos alterados
     if (nextLogin && nextLogin !== originalSnapshot.login) {
       payload.username = nextLogin;
     }
     if (nextPass) {
-      // no UPDATE, o backend espera 'senha' (pt-BR)
       payload.senha = nextPass;
     }
     if (nextIsAdmin !== originalSnapshot.isAdmin) {
@@ -212,7 +197,6 @@ const Usuarios = () => {
         throw new Error(msg || 'Falha ao atualizar usuário');
       }
 
-      // Atualiza a linha localmente (sem refetch)
       setUsers(prev =>
         prev.map(u =>
           u.id === editId
@@ -344,7 +328,6 @@ const Usuarios = () => {
           </table>
         </div>
 
-        {/* Modal de criação (sem JS do Bootstrap) */}
         {showCreate && (
           <>
             <div className="modal d-block" tabIndex="-1" role="dialog" aria-modal="true">
@@ -419,7 +402,6 @@ const Usuarios = () => {
                 </div>
               </div>
             </div>
-            {/* backdrop */}
             <div className="modal-backdrop fade show" onClick={closeCreate} />
           </>
         )}
@@ -498,7 +480,6 @@ const Usuarios = () => {
                 </div>
               </div>
             </div>
-            {/* backdrop */}
             <div className="modal-backdrop fade show" onClick={closeEdit} />
           </>
         )}

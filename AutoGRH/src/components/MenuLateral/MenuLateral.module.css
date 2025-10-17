@@ -1,8 +1,0 @@
-.menuLateral {
-  min-width: 280px;
-  position: sticky;
-  top: 0;
-  align-self: flex-start;
-  height: fit-content;
-  z-index: 1020;
-}

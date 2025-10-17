@@ -54,8 +54,7 @@ export default function FolhaSection() {
 
   const now = new Date();
 
-  // Filtros da listagem
-  const [mesFiltro, setMesFiltro] = useState(''); // '' = todos; 1..12 = mês específico
+  const [mesFiltro, setMesFiltro] = useState('');
   const [ano, setAno] = useState(now.getFullYear());
   const [tipo, setTipo] = useState('');
 
@@ -179,7 +178,6 @@ export default function FolhaSection() {
     }
   }
 
-  // fechar diretamente pela LISTA
   async function fecharFolhaDaLista(f) {
     if (!f) return;
     const id = f.id ?? f.ID;
@@ -199,7 +197,6 @@ export default function FolhaSection() {
     }
   }
 
-  // criar folha de VALE (apenas admin) — usa mês/ano atuais
   async function onCriarFolhaVale() {
     const cm = now.getMonth() + 1;
     const ca = now.getFullYear();
@@ -217,7 +214,6 @@ export default function FolhaSection() {
     }
   }
 
-  // Busca por nome no detalhe
   const pagamentosFiltrados = useMemo(() => {
     const termo = (busca || '').toLowerCase().trim();
     const arr = Array.isArray(pagamentos) ? [...pagamentos] : [];
@@ -236,7 +232,6 @@ export default function FolhaSection() {
     });
   }, [pagamentos, nomeByFuncionario, busca]);
 
-  // Agregados (apenas usados na folha de SALÁRIO)
   const totaisSalario = useMemo(() => {
     let base=0, adic=0, desc=0, fam=0, descFaltas=0, descVales=0, final=0;
     for (const p of pagamentosFiltrados) {
@@ -256,7 +251,6 @@ export default function FolhaSection() {
     return { base, adic, desc, fam, descFaltas, descVales, final };
   }, [pagamentosFiltrados, faltasByFunc]);
 
-  // Total para folha VALE
   const totalVales = useMemo(() => {
     return pagamentosFiltrados.reduce((acc, r) => {
       const valor = Number(r?.valor ?? r?.Valor ?? r?.valorFinal ?? r?.ValorFinal ?? 0);
@@ -290,7 +284,6 @@ export default function FolhaSection() {
       return;
     }
 
-    // CSV de SALÁRIO (mantém campos)
     const header = [
       'ID','Funcionário','Salário base','Adicional','Desconto','Salário família',
       'Desc. faltas','Desc. vales','Valor final','Pago'
@@ -330,10 +323,8 @@ export default function FolhaSection() {
   return (
     <div className="card shadow-sm mt-3">
       <div className="card-body">
-        {/* HEADER: filtros + ação (criar VALE) */}
         <div className="mb-3">
           <div className="row g-2 align-items-end">
-            {/* Filtro: Mês */}
             <div className="col-6 col-md-2">
               <div className="input-group input-group-sm">
                 <span className="input-group-text">Mês</span>
@@ -353,7 +344,6 @@ export default function FolhaSection() {
                 />
               </div>
             </div>
-            {/* Filtro: Ano */}
             <div className="col-6 col-md-2">
               <div className="input-group input-group-sm">
                 <span className="input-group-text">Ano</span>
@@ -365,7 +355,6 @@ export default function FolhaSection() {
                 />
               </div>
             </div>
-            {/* Filtro: Tipo */}
             <div className="col-12 col-md-4">
               <div className="input-group input-group-sm">
                 <span className="input-group-text">Tipo</span>
@@ -376,7 +365,6 @@ export default function FolhaSection() {
                 </select>
               </div>
             </div>
-            {/* Ação: Criar folha de VALE (admin) */}
             <div className="col-12 col-md-3 ms-md-auto">
               {isAdmin && (
                 <button
@@ -398,7 +386,6 @@ export default function FolhaSection() {
           </div>
         )}
 
-        {/* LISTA DE FOLHAS */}
         <div className="table-responsive">
           <table className="table table-striped table-hover align-middle">
             <thead>
@@ -468,7 +455,6 @@ export default function FolhaSection() {
           </table>
         </div>
 
-        {/* DETALHE DA FOLHA */}
         {selected && (
           <div className="mt-4">
             <div className="d-flex flex-wrap justify-content-between align-items-center mb-2">
@@ -494,7 +480,6 @@ export default function FolhaSection() {
               </div>
             </div>
 
-            {/* Resumo — muda conforme o tipo */}
             {isFolhaVale ? (
               <>
                 <div className="mb-1 text-muted small">Total dos vales</div>
@@ -529,7 +514,6 @@ export default function FolhaSection() {
             )}
 
             <div className="table-responsive">
-              {/* Tabela muda conforme o tipo */}
               {!isFolhaVale ? (
                 <table className="table table-sm table-striped table-hover align-middle">
                   <thead>
@@ -602,7 +586,6 @@ export default function FolhaSection() {
                   </tbody>
                 </table>
               ) : (
-                // Tabela específica de VALE
                 <table className="table table-sm table-striped table-hover align-middle">
                   <thead>
                     <tr>
@@ -648,7 +631,6 @@ export default function FolhaSection() {
         )}
       </div>
 
-      {/* Modal */}
       <PagamentoEditModal
         open={editOpen}
         onClose={() => setEditOpen(false)}

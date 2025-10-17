@@ -18,7 +18,7 @@ export default function DescansoCreateModal({ funcId, onClose }) {
       const da = new Date(a); const db = new Date(b);
       const ms = db - da;
       if (!Number.isFinite(ms)) return 0;
-      return Math.floor(ms / 86400000) + 1; // inclusive
+      return Math.floor(ms / 86400000) + 1; 
     } catch { return 0; }
   }
   const dias = useMemo(() => (inicio && fim) ? diasBetween(inicio, fim) : 0, [inicio, fim]);
@@ -32,7 +32,6 @@ export default function DescansoCreateModal({ funcId, onClose }) {
     }
     try {
       setLoading(true);
-      // chama a rota nova de criação automática (FIFO + split)
       await descansosApi.createAuto(funcId, { inicio, fim });
       try { await feriasApi.garantir(funcId); } catch {}
       onClose?.();

@@ -26,7 +26,7 @@ export default function FeriasHistoricoModal({ funcId, onClose }) {
   const { user } = useAuth();
   const isAdmin = (user?.perfil || user?.role) === 'admin' || user?.isAdmin === true;
 
-  const [tab, setTab] = useState('periodos'); // 'periodos' | 'solicitacoes'
+  const [tab, setTab] = useState('periodos');
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
 
@@ -34,7 +34,7 @@ export default function FeriasHistoricoModal({ funcId, onClose }) {
   const [selected, setSelected] = useState(null);
 
   const [descansos, setDescansos] = useState([]);
-  const [filtro, setFiltro] = useState('pago'); // 'pago' | 'aprovado' | 'pendente' | 'todos'
+  const [filtro, setFiltro] = useState('pago');
 
   const descansosFiltrados = useMemo(() => {
     if (!Array.isArray(descansos)) return [];
@@ -52,7 +52,6 @@ export default function FeriasHistoricoModal({ funcId, onClose }) {
       const list = await feriasApi.listByFuncionario(funcId);
       setPeriodos(Array.isArray(list) ? list : []);
       setSelected(null);
-      // Carrega TODOS os descansos do funcionário (não por período)
       const all = await descansosApi.listByFuncionario(funcId);
       setDescansos(Array.isArray(all) ? all : []);
     } catch (e) {
@@ -62,7 +61,7 @@ export default function FeriasHistoricoModal({ funcId, onClose }) {
     }
   }
 
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [funcId]);
+  useEffect(() => { load()}, [funcId]);
 
   function calcTotalLinha(p) {
     const valor = Number(p?.valor || 0);
@@ -95,7 +94,6 @@ export default function FeriasHistoricoModal({ funcId, onClose }) {
     catch (e) { alert(e?.message || 'Falha ao reverter pago'); }
   }
 
-  // AÇÕES de DESCANSO — somente admin
   async function onAprovar(id) {
     try { await descansosApi.aprovar(id); await load(); }
     catch (e) { alert(e?.message || 'Falha ao aprovar'); }

@@ -1,4 +1,3 @@
-// src/services/pagamentosApi.js
 export function makePagamentosApi(request) {
   const base = '/pagamentos';
 
@@ -18,7 +17,6 @@ export function makePagamentosApi(request) {
     return res.json();
   };
 
-  // Admin
   const marcarPago = async (id) => {
     const res = await request(`${base}/${id}/pagar`, { method: 'PUT' });
     if (!res.ok) throw new Error(await res.text() || 'Falha ao marcar como pago');

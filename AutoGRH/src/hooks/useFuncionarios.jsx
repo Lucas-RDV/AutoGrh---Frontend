@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useApi } from './useApi';
 import { makeFuncionariosApi } from '../services/funcionariosApi';
 
-// Remove acentos e padroniza caixa
 function norm(str = '') {
   return str
     .normalize?.('NFD')
@@ -11,7 +10,6 @@ function norm(str = '') {
 }
 
 export function useFuncionarios({ state = 'ativos' } = {}) {
-  // state: 'ativos' | 'todos' | 'inativos'
   const { request } = useApi();
   const api = makeFuncionariosApi(request);
 
@@ -38,7 +36,7 @@ export function useFuncionarios({ state = 'ativos' } = {}) {
       }
     })();
     return () => { alive = false; };
-  }, [state]); // recarrega ao trocar o filtro
+  }, [state]);
 
   const filtered = useMemo(() => {
     const t = norm(q.trim());
@@ -50,7 +48,7 @@ export function useFuncionarios({ state = 'ativos' } = {}) {
         nome.includes(t) ||
         String(f.id).includes(t) ||
         String(f.pessoaId).includes(t) ||
-        cpf.includes(t.replace(/\D/g,'')) // permite buscar por números do CPF
+        cpf.includes(t.replace(/\D/g,'')) 
       );
     });
   }, [list, q]);

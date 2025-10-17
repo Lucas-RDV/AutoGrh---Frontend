@@ -26,7 +26,6 @@ export function makePessoasApi(request, opts = {}) {
     return Array.isArray(arr) ? arr.map(normalizePessoa) : [];
   }
 
-  // sem endpoint dedicado de CPF → filtra localmente a lista
   async function findByCpf(cpfDigits) {
     const all = await list();
     const target = all.find((p) => digits(p.cpf) === digits(cpfDigits));

@@ -2,11 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { makeDocumentosApi } from "../../../services/documentosApi";
 
-// util: extrai "nome" e "timestamp" do caminho salvo: documentos/{funcId}/1696623456_nome.ext
 function fromPath(caminho) {
   if (!caminho) return { base: "arquivo", createdAt: null };
   const base = caminho.split(/[\\/]/).pop() || "arquivo";
-  // tenta pegar TIMESTAMP_nome.ext
   const m = base.match(/^(\d+)_([\s\S]+)$/);
   if (!m) return { base, createdAt: null };
   const ts = parseInt(m[1], 10);
@@ -27,14 +25,14 @@ export default function DocumentosTab({ funcId }) {
     setLoading(true);
     setErr(null);
     try {
-      const list = await api.listByFuncionario(funcId); // [{ id, funcionarioID, caminho }]
+      const list = await api.listByFuncionario(funcId);
       const mapped = (Array.isArray(list) ? list : []).map((d) => {
         const { base, createdAt } = fromPath(d.caminho);
         return {
           id: d.id,
           funcionarioID: d.funcionarioID ?? d.funcionarioId,
           caminho: d.caminho,
-          nome: base, // nome do arquivo sem timestamp
+          nome: base,
           criadoEm: createdAt,
         };
       });
@@ -48,7 +46,6 @@ export default function DocumentosTab({ funcId }) {
 
   useEffect(() => {
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [funcId]);
 
   async function onUpload() {
@@ -66,11 +63,8 @@ export default function DocumentosTab({ funcId }) {
     try {
       const { blob, filename } = await api.fetchBlob(id);
       const url = URL.createObjectURL(blob);
-      // abrir em nova aba para "visualizar"; se o tipo não for suportado, o navegador oferece download
       const w = window.open(url, "_blank", "noopener,noreferrer");
-      // dica: em alguns navegadores, dar um nome pra nova guia:
       if (w && w.document) w.document.title = filename || "documento";
-      // revoga quando a aba atual é fechada/navegada
       setTimeout(() => URL.revokeObjectURL(url), 60_000);
     } catch (e) {
       alert(e?.message || "Falha ao abrir documento");

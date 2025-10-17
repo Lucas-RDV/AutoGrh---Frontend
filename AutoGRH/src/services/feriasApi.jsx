@@ -1,4 +1,3 @@
-// src/services/feriasApi.jsx
 export function makeFeriasApi(request) {
   async function listByFuncionario(funcionarioId) {
     const r = await request(`/funcionarios/${funcionarioId}/ferias`, { method: "GET" });
@@ -24,7 +23,6 @@ export function makeFeriasApi(request) {
     return true;
   }
 
-  // Admin-only (desfazer)
   async function desmarcarTercoPago(id) {
     const r = await request(`/ferias/${id}/terco-desmarcar`, { method: "PUT" });
     if (!r.ok) throw new Error(await r.text());

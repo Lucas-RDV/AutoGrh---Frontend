@@ -39,11 +39,9 @@ export default function Funcionarios() {
       setLoading(true);
       setErr(null);
       try {
-        // 1) lista "crua"
         const list = await funcApi.list();
         const base = Array.isArray(list) ? list : [];
 
-        // 2) para cada item, busca DETALHE do funcionário e a PESSOA
         const enriched = await Promise.all(
           base.map(async (f) => {
             const id = f?.id;
@@ -57,11 +55,10 @@ export default function Funcionarios() {
               if (id != null) {
                 const fd = await funcApi.getById(id);
                 cargo = nz(cargo) ?? nz(fd?.cargo);
-                // alguns detalhes já trazem pessoa
                 nome = nome ?? nz(fd?.pessoa?.nome);
                 cpf  = cpf  ?? nz(fd?.pessoa?.cpf);
               }
-            } catch { /* segue com o que tiver */ }
+            } catch {}
 
             try {
               if ((!nome || !cpf) && pessoaId) {
@@ -69,14 +66,14 @@ export default function Funcionarios() {
                 nome = nome ?? nz(p?.nome);
                 cpf  = cpf  ?? nz(p?.cpf);
               }
-            } catch { /* segue com o que tiver */ }
+            } catch {}
 
             return {
               ...f,
               displayNome: nome ?? "-",
               displayCpf:  cpf  ?? "-",
               displayCargo: cargo ?? "-",
-              isAtivo: f?.demissao ? false : true, // se não vier demissão, considera ativo
+              isAtivo: f?.demissao ? false : true, 
             };
           })
         );

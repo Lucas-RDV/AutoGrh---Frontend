@@ -7,7 +7,7 @@ import DadosTab from './tabs/DadosTab';
 import SalariosTab from './tabs/SalariosTab';
 import DocumentosTab from './tabs/DocumentosTab';
 import FeriasHistoricoModal from './tabs/FeriasHistoricoModal';
-import DescansoCreateModal from './tabs/DescansoCreateModal'; // NOVO
+import DescansoCreateModal from './tabs/DescansoCreateModal';
 
 function extractInlinePessoa(f) {
   return (
@@ -33,9 +33,8 @@ export default function FuncionarioDetail() {
   const [editingDados, setEditingDados] = useState(false);
   const dadosRef = useRef(null);
 
-  // Modais
   const [showFerias, setShowFerias] = useState(false);
-  const [showCriarDescanso, setShowCriarDescanso] = useState(false); // NOVO
+  const [showCriarDescanso, setShowCriarDescanso] = useState(false);
 
   async function resolvePessoaFromLists(funcId) {
     const endpoints = ['/funcionarios', '/funcionarios/ativos', '/funcionarios/inativos'];
