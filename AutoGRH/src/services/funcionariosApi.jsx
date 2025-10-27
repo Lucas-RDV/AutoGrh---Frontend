@@ -133,7 +133,6 @@ export function makeFuncionariosApi(request, opts = {}) {
   }
 
   async function create(payload) {
-    // Controller espera camelCase exatos + datas "YYYY-MM-DD"
     const r = await request(`${base}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

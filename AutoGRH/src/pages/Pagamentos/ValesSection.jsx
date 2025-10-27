@@ -52,7 +52,7 @@ export default function ValesSection() {
   const [showCreate, setShowCreate] = useState(false);
   const [busy, setBusy] = useState(false);
 
-  const { list: funcs } = useFuncionarios({ onlyActive: true });
+  const { all: funcs } = useFuncionarios({ onlyActive: true });
   const nomeByFuncionario = useMemo(() => {
     const m = new Map();
     for (const f of funcs) m.set(f.id, f.nome);

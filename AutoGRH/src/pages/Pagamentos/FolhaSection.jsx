@@ -76,7 +76,7 @@ export default function FolhaSection() {
 
   const [busca, setBusca] = useState('');
 
-  const { list: funcs } = useFuncionarios({ onlyActive: false });
+  const { all: funcs } = useFuncionarios({ onlyActive: false });
   const nomeByFuncionario = useMemo(() => {
     const m = new Map();
     for (const f of funcs) m.set(f.id, f.nome);
