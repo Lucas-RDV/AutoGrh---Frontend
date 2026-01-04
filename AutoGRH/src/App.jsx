@@ -99,7 +99,7 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename='/app'>
         <div className="d-flex flex-column min-vh-100">
           <NavBar />
           <div className="flex-fill container py-3">
