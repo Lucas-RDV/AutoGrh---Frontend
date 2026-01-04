@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
 const DEFAULT_TIMEOUT_MS = 10000;
 
 export function useApi() {
@@ -21,7 +20,7 @@ export function useApi() {
 
     let res;
     try {
-      res = await fetch(`${API_BASE}${path}`, {
+      res = await fetch(`${path}`, {
         ...rest,
         headers,
         signal: controller.signal,

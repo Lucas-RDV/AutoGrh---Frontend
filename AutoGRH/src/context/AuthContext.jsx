@@ -1,7 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef } from 'react';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
-
 const AuthContext = createContext();
 
 function normalizeUser(u) {
@@ -49,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const login = async (username, password) => {
-    const res = await fetch(`${API_BASE}/auth/login`, {
+    const res = await fetch(`/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include', 
@@ -78,7 +76,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await fetch(`${API_BASE}/auth/logout`, {
+      await fetch(`/auth/logout`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -113,7 +111,7 @@ export const AuthProvider = ({ children }) => {
           }
         }
 
-        const me = await fetch(`${API_BASE}/me`, { credentials: 'include' });
+        const me = await fetch(`/me`, { credentials: 'include' });
         if (me.status === 401) {
           await logout();
         } else if (me.ok && !user) {
